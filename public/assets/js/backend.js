@@ -12,6 +12,15 @@ app.get("/", function (req, res) {
     res.sendFile(path.join(__dirname, "../index.html"));
 });
 
-app.get("/notes", function(req, res) {
+app.get("/notes", function (req, res) {
     res.sendFile(path.join(__dirname, "../notes.html"));
-  });
+});
+
+app.get("/farleysapi/notes", function (req, res) {
+    fs.readFileSync(path.join(__dirname, "../../../db/db.json"), function(err, data) {
+        if (err) throw err;
+        var value = JSON.parse(data);
+        res.json(value);
+    });
+});
+
