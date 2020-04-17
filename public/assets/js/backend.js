@@ -24,3 +24,16 @@ app.get("/farleysapi/notes", function (req, res) {
     });
 });
 
+app.post("farleysapi/notes", function (req, res) {
+    var note = req.body;
+    fs.readFileSync(path.join(__dirname, "../../../db/db.json"), function(err, data) {
+        if (err) throw err
+        var value = JSON.parse(data);
+        value.push(note);
+        fs.writeFileSync(path.join(__dirname, "../../../db/db.json"), JSON.stringify(value), function(err, data) {
+            if (err) throw err;
+            res.JSON(value);
+        });
+    });
+});
+
