@@ -7,17 +7,18 @@ var PORT = process.env.port || 8080;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static("public"))
 
 app.get("/", function (req, res) {
-    res.sendFile(path.join(__dirname, "../index.html"));
+    res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
 app.get("/notes", function (req, res) {
-    res.sendFile(path.join(__dirname, "../notes.html"));
+    res.sendFile(path.join(__dirname, "public/notes.html"));
 });
 
 app.get("/farleysapi/notes", function (req, res) {
-    fs.readFileSync(path.join(__dirname, "../../../db/db.json"), function(err, data) {
+    fs.readFileSync(path.join(__dirname, "db/db.json"), function(err, data) {
         if (err) throw err;
         var value = JSON.parse(data);
         res.json(value);
@@ -26,11 +27,11 @@ app.get("/farleysapi/notes", function (req, res) {
 
 app.post("farleysapi/notes", function (req, res) {
     var postNote = req.body;
-    fs.readFileSync(path.join(__dirname, "../../../db/db.json"), function(err, data) {
+    fs.readFileSync(path.join(__dirname, "db/db.json"), function(err, data) {
         if (err) throw err
         var value = JSON.parse(data);
         value.push(postNote);
-        fs.writeFileSync(path.join(__dirname, "../../../db/db.json"), JSON.stringify(value), function(err, data) {
+        fs.writeFileSync(path.join(__dirname, "db/db.json"), JSON.stringify(value), function(err, data) {
             if (err) throw err;
             res.JSON(value);
         });
