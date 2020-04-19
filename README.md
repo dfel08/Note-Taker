@@ -22,7 +22,7 @@ Once Chrome is installed on your machine, proceed to open the webpage with your 
 
 ## Deployed Link
 
-* [See Live Site](https://dfel08.github.io/Good-README-Generator/)
+* [See Live Site](https://dfels-note-taker.herokuapp.com/)
 
 
 ## Authors
