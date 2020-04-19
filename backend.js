@@ -1,6 +1,7 @@
 var express = require("express");
 var fs = require("fs");
 var path = require("path");
+const { v4: uuidv4 } = require('uuid'); 
 
 var app = express();
 var PORT = process.env.PORT || 8080;
@@ -27,6 +28,7 @@ app.get("/api/notes", function (req, res) {
 
 app.post("/api/notes", function (req, res) {
     var postNote = req.body;
+    postNote.id = uuidv4();
     fs.readFile(path.join(__dirname, "db/db.json"), function(err, data) {
         if (err) throw err
         var value = JSON.parse(data);
@@ -40,14 +42,15 @@ app.post("/api/notes", function (req, res) {
 
 app.delete("/api/notes/:id", function(req, res) {
     var deleteNote = req.params.id;
-    console.log(deleteNote);
     fs.readFile(path.join(__dirname, "db/db.json"), function(err, data) {
         if (err) throw err;
         var value = JSON.parse(data);
-        value.splice(deleteNote);
-        fs.writeFile(path.join(__dirname, "db/db.json"), JSON.stringify(value), function (err, data) {
+        console.log(value);
+        var result = value.filter(note => note.id !== deleteNote)
+        console.log(result);
+        fs.writeFile(path.join(__dirname, "db/db.json"), JSON.stringify(result), function (err, data) {
             if (err) throw err;
-            res.json(value);
+            res.json(result);
         });
     });
 });
